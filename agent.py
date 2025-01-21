@@ -5,6 +5,7 @@ from env import SnakeGameAI
 from env import Direction, Point
 from collections import deque
 from model import QTrainer, DQN
+from utils import plot
 
 class Agent:
     def __init__(self):
@@ -17,7 +18,7 @@ class Agent:
         self.memory = deque(maxlen=self.max_memory)
 
         self.model = DQN(11,256,3)
-        self.trainer = QTrainer(lr=self.lr, gamma=self.gamma)
+        self.trainer = QTrainer(self.model, lr=self.lr, gamma=self.gamma)
 
     def get_state(self, env):
         head = env.body[0]
@@ -131,6 +132,12 @@ def train():
             if score > best_score:
                 best_score = score
                 agent.model.save()
+
+            plot_scores.append(score)
+            total_score+=score
+            mean_score = total_score / agent.n_games
+            plot_mean_scores.append(mean_score)
+            plot(plot_scores, plot_mean_scores)
 
 if __name__ == "__main__":
     train()
