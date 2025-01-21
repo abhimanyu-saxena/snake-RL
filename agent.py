@@ -4,19 +4,20 @@ import numpy as np
 from env import SnakeGameAI
 from env import Direction, Point
 from collections import deque
-
-MAX_MEMORY = 100_000
-BATCH = 1000
-LR = 0.001
+from model import QTrainer, DQN
 
 class Agent:
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0    # exploration/exploitation factor
-        self.gamma = 0      # discount factor
-        self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = None
-        self.trainer = None
+        self.gamma = 0.9    # discount factor
+        self.max_memory = 100_000
+        self.batch = 1000
+        self.lr = 0.001
+        self.memory = deque(maxlen=self.max_memory)
+
+        self.model = DQN(11,256,3)
+        self.trainer = QTrainer(lr=self.lr, gamma=self.gamma)
 
     def get_state(self, env):
         head = env.body[0]
@@ -76,7 +77,7 @@ class Agent:
             action[move] = 1
         else:
             state = torch.tensor(state, dtype=torch.float)
-            pred = self.model.predict(state)
+            pred = self.model(state)
             move = torch.argmax(pred).item()
             action[move] = 1
         
@@ -84,8 +85,8 @@ class Agent:
 
 
     def train_long_memory(self):
-        if len(self.memory) > BATCH:
-            mini_sample  = random.sample(self.memory, BATCH)
+        if len(self.memory) > self.batch:
+            mini_sample  = random.sample(self.memory, self.batch)
         else:
             mini_sample = self.memory
         
@@ -129,7 +130,7 @@ def train():
 
             if score > best_score:
                 best_score = score
-                # TODO: agent.mode.save()
+                agent.model.save()
 
 if __name__ == "__main__":
     train()
