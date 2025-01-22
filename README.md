@@ -1,6 +1,25 @@
 # snake-RL
 This project trains a Deep Q-Network (DQN) algorithm to play a snake game. The repository contains the game environment, DQN implementation, and utilities for training and visualizing results.
 
+Below is the best run of the algorithm:
+
+![Best run gif](best_run.gif)
+
+## Usage
+
+To train the DQN model:
+
+```bash
+python agent.py --train --episodes <total no. of episodes>
+```
+
+To play the game with trained model:
+
+```bash
+python agent.py --play --episodes <total no. of episodes> -- record
+```
+
+
 ## Description
 
 - **`env.py`**: Contains the snake game environment.
@@ -17,11 +36,12 @@ To run this project, you need the following Python packages:
 - `numpy`
 - `matplotlib`
 - `os`
+- `imageio`
 
 You can install the required packages using pip:
 
 ```bash
-pip install torch pygame numpy matplotlib
+pip install torch pygame numpy matplotlib imageio
 ```
 
 ## Score vs. Episode Plot
