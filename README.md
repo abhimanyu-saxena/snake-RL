@@ -22,3 +22,9 @@ You can install the required packages using pip:
 
 ```bash
 pip install torch pygame numpy matplotlib
+
+## Score vs. Episode Plot
+
+Below is the plot of the score achieved by the DQN agent over different Episodes:
+
+![Score vs. Episode Plot](training_curve.jpg)
