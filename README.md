@@ -48,4 +48,10 @@ pip install torch pygame numpy matplotlib imageio
 
 Below is the plot of the score achieved by the DQN agent over different Episodes:
 
-![Score vs. Episode Plot](training_curve.jpg)
+![Score vs. Episode Plot](training_curve.jpg){:width="320" height="240"}
+
+## Known Issues
+
+- Cannot move or interact with training plots and game window during training.
+- Training plot is not saved after training.
+- Low fps and no looping in the best run gif.
