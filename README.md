@@ -22,6 +22,7 @@ You can install the required packages using pip:
 
 ```bash
 pip install torch pygame numpy matplotlib
+```
 
 ## Score vs. Episode Plot
 
