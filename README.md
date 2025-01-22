@@ -48,7 +48,7 @@ pip install torch pygame numpy matplotlib imageio
 
 Below is the plot of the score achieved by the DQN agent over different Episodes:
 
-![Score vs. Episode Plot](training_curve.jpg){:width="320" height="240"}
+![Score vs. Episode Plot](training_curve.jpg){:width="320px" height="240px"}
 
 ## Known Issues
 
