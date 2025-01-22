@@ -32,7 +32,7 @@ GREEN2 = (0,255,100)
 
 
 BLOCK_SIZE = 20
-SPEED = 10
+SPEED = 50
 
 font = pygame.font.Font("arial.ttf", 25)
 
