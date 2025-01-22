@@ -7,6 +7,7 @@ from collections import deque
 from model import QTrainer, DQN
 from utils import plot
 import argparse
+import imageio
 
 class Agent:
     def __init__(self):
@@ -143,14 +144,16 @@ def train(episodes):
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
 
-def play(episodes):
+def play(episodes, record=False):
     agent = Agent()
     env = SnakeGameAI()
     agent.model.load_state_dict((torch.load('model/model.pth', weights_only=True)))
-    agent.model.eval() 
-    
+    agent.model.eval()
+    if record: 
+        best_game_frames = []
+    high_score = 0
     for _ in range(episodes):
-        high_score = 0
+        frames = []
         done = False
         state = agent.get_state(env)
         while not done:
@@ -159,10 +162,21 @@ def play(episodes):
 
             # make action step
             reward, done, score = env.play_step(action)
+            if record:
+                screen = env.get_screen()
+                frames.append(np.transpose(screen, (1, 0, 2)))
             state = agent.get_state(env)
         env.reset()
-        high_score = max(score,high_score)
-        print("High Score: ", high_score)
+        if score > high_score:
+            high_score = score
+            if record:
+                best_game_frames = frames.copy()
+            print("New High Score: ", high_score)
+        
+    if record:
+        print("Saving Best Game as best_run.gif")
+        imageio.mimsave("best_run.gif", best_game_frames, fps=120)
+        
     
 
 def main():
@@ -170,6 +184,7 @@ def main():
     parser.add_argument('--train', action='store_true', help="Train the DQN model.")
     parser.add_argument('--episodes', type=int, help="Number of training/ inference episodes.", default=100)
     parser.add_argument('--play', action='store_true', help="Play the game using the trained DQN model.")
+    parser.add_argument('--record', action='store_true', help="Record the best run", default=False)
     args = parser.parse_args()
     
     if args.train:
@@ -177,7 +192,7 @@ def main():
         train(args.episodes)
     elif args.play:
         print("Play mode selected.")
-        play(args.episodes)
+        play(args.episodes, args.record)
     else:
         print("Please specify either --train or --play.")
 

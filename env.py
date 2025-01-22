@@ -172,3 +172,7 @@ class SnakeGameAI:
         # return game state and score
         
         return reward, game_over, self.score
+    
+    def get_screen(self):
+        """ Capture the screen and return it as a numpy array """
+        return pygame.surfarray.array3d(self.display)  # returns RGB data
